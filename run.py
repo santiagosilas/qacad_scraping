@@ -8,8 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-
-
+from bs4 import BeautifulSoup
 
 # instantiate a chrome options object so you can set the size and headless preference
 chrome_options = Options()
@@ -37,7 +36,7 @@ print('Try to access the system..')
 driver.find_element_by_id('btnOk').click()
 
 # capture the start screen
-driver.get_screenshot_as_file("qacademico.png")
+driver.get_screenshot_as_file("screen01.png")
 
 # Finally, closes the browser
 driver.close()

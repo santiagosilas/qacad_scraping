@@ -1,6 +1,6 @@
 
 # Just a module to hold my credetials
-from qsettings import username, password
+import qsettings
 import os
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -26,13 +26,12 @@ driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=chrome_
 
 
 print('Go to URL...')
-url = 'https://qacademico.ifce.edu.br/qacademico/professores'
-driver.get(url)
+driver.get(qsettings.url)
 
 print('Filling the login form')
 WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.NAME, 'LOGIN')))
-driver.find_element_by_name('LOGIN').send_keys(username)
-driver.find_element_by_name('SENHA').send_keys(password)
+driver.find_element_by_name('LOGIN').send_keys(qsettings.username)
+driver.find_element_by_name('SENHA').send_keys(qsettings.password)
 
 print('Try to access the system..')
 driver.find_element_by_id('btnOk').click()

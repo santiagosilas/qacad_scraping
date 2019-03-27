@@ -1,0 +1,10 @@
+setuptools
+Flask
+Flask-RESTful
+Flask-Cors
+psycopg2
+psycopg2-binary
+requests
+selenium
+bs4
+flasgger

@@ -41,7 +41,7 @@ https://qacademico.ifce.edu.br/qacademico/index.asp?t=3066&MODO=FALTAS&COD_PAUTA
 
 '''
 
-debug = True
+debug = False
 
 # create a output folder
 output_folder = 'screens'
@@ -87,34 +87,26 @@ next_page = 'https://qacademico.ifce.edu.br/qacademico/index.asp?t=3061'
 driver.get(next_page)
 
 # Link 
-next_page = "https://qacademico.ifce.edu.br/qacademico/index.asp?t=3066&MODO=FALTAS&COD_PAUTA=329792&ETAPA=1&N_ETAPA=1B#"
+next_page = "https://qacademico.ifce.edu.br/qacademico/index.asp?t=3066&COD_PAUTA=329792&N_ETAPA=2B&MODO="
 driver.get(next_page)
 
 # Scraping now
+ch_sum = 0
 soup = BeautifulSoup(driver.page_source, 'html.parser')
-soup = soup.find("table", {"id": "div_secao_esquerda"})
+table = soup.find('table', {'class':'conteudoTexto'})
+for tr in table.findAll('tr')[2:-1]:
+    tds = tr.findAll('td')
+    if len(tds) == 4:
+        tag_pre__contents = tds[1].find('pre').contents
+        tt_aula = tag_pre__contents[0] if len(tag_pre__contents) > 0 else ''
+        ch_aula = tds[2].contents[0]
+        if tt_aula.replace(' ', '') != '':
+            ch_sum += int(ch_aula)
 
-turma, count = list(), 1
-for link in soup.find_all('a'):
-    url = link.get('href')
-    content = link.contents[0]
-    if content[0].isalpha():
-        nome = content
-    else:
-        matricula = content
-    if count % 2 == 0:
-        turma.append({'nome':nome, 'matricula': matricula, 'url': url})
-    count += 1
+print('ch sum:', ch_sum)
 
-print(json.dumps(turma, indent=1))
-
-
-# before end
-if debug:
-    print('Press Enter to finish..')
-    msvcrt.getch()
+print('Press Enter to finish..')
+msvcrt.getch()
 
 # Finally, closes the browser
 driver.close()
-
-print('End!')
